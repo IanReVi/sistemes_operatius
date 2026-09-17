@@ -39,10 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const footerHTML = `
     <footer class="peu">
       <p class="peu-llicencia">
-        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="license noopener">
-          <img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="Llicència Creative Commons Reconeixement-NoComercial-CompartirIgual 4.0" width="88" height="31">
-        </a>
-        <span>Contingut sota llicència <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ca" target="_blank" rel="license noopener">CC BY-NC-SA 4.0</a></span>
+        <a href="https://ianrevi.github.io/sistemes_operatius/index.html">Sistemes Operatius</a> © 2026 by
+        <a href="https://github.com/IanReVi/sistemes_operatius">Ian Reverté Vidiella</a> is licensed under
+        <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International</a>
+        <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+        <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+        <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
       </p>
       <p class="autoria">Autor: <strong>Ian Reverté Vidiella</strong> · Pràctica 0 · Sistemes Operatius (ISOPJ1)</p>
     </footer>
