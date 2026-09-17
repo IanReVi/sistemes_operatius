@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   const currentPath = window.location.pathname;
-  const isSprintPage = /\/sprint[1-3][uw]\//i.test(currentPath);
+  const isSprintPage = /\/sprint[1-5][uw]\//i.test(currentPath);
   const pathPrefix = isSprintPage ? "../" : "";
   const pageTitle = document.title.split(" - ")[0];
   const headerElem = document.getElementById("header-container");
   const footerElem = document.getElementById("footer-container");
   const headerData = headerElem ? headerElem.dataset : {};
-  const sprintMatch = currentPath.match(/sprint([1-3])([uw])\//i);
+  const sprintMatch = currentPath.match(/sprint([1-5])([uw])\//i);
   const section = sprintMatch ? sprintMatch[2].toLowerCase() : currentPath.match(/sprint([uw])\.html/i)?.[1]?.toLowerCase();
   const sectionLabel = section === "u" ? "Ubuntu" : section === "w" ? "Windows" : "";
   const sectionPath = section ? `sprints${section}.html` : "";
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const breadcrumb = isSprintPage
     ? `<p class="miguetes"><a href="${pathPrefix}index.html">Portada</a> / <a href="${pathPrefix}${sectionPath}">Índex de sprints ${sectionLabel}</a> / Sprint ${sprintNumber}</p>`
     : pageTitle.startsWith("Índex de sprints")
-      ? `<p class="miguetes"><a href="index.html">Portada</a> / Índex de sprints</p>`
+      ? `<p class="miguetes"><a href="index.html">Portada</a> / ${title}</p>`
       : "";
 
   const headerHTML = `
