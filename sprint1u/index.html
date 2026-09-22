@@ -46,26 +46,25 @@
 
       <article class="apartat" id="apartat1">
         <h2>1. Instal·lació del sistema operatiu</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Un cop arrencat
+        <p>Primer he creat una maquina virtual amb xarxa nat, 4 GB de RAM i 25 GB de disc. Un cop arrencat
           el suport d'instal·lació, cal seguir l'assistent i triar les opcions de
-          particionat abans de continuar. <strong>Aquest pas és irreversible</strong>,
-          així que revisa bé el disc de destinació.</p>
+          particionat abans de continuar. </p>
         <ul>
+          <h3>Passos per instal·lar el sistema operatiu:</h3>
           <li>Arrencar des del USB o la imatge ISO.</li>
           <li>Triar l'idioma i la distribució de teclat.</li>
           <li>Configurar el particionat del disc.</li>
           <li>Esperar que finalitzi la còpia d'arxius i reiniciar.</li>
         </ul>
-        <img src="../img/exemple.svg" alt="Exemple de captura de pantalla de l'assistent d'instal·lació">
-        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Un cop reiniciat el sistema, comprova que arrenca correctament i que
-          reconeix tot el maquinari abans de continuar amb el següent apartat.</p>
+        <img src="./img/particions.png" alt="Captura de pantalla del procés de particionat del disc durant la instal·lació">
+        <p>En aquest cas li he assignat 20 GB a l'arrel del sistema "/", 2 GB com a SWAP i el restant per a la /home.
+          Un cop reiniciat el sistema, el sistema arrenca correctament i reconeix tot el maquinari.</p>
         <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
       </article>
       <article class="apartat" id="apartat2">
         <h2>2. Configuració de xarxa bàsica</h2>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-          ut aliquip ex ea commodo consequat. La configuració de xarxa és
+        <p>Al tenir la maquina virutal amb NAT, la configuració de xarxa és automàtica
+          i ja dona conexió a internet. La configuració de xarxa és
           <strong>imprescindible</strong> per poder actualitzar el sistema i
           instal·lar programari nou.
         </p>
@@ -74,9 +73,11 @@
           <li>Configurar una IP estàtica si el servei ho requereix.</li>
           <li>Verificar la connectivitat amb <code>ping</code>.</li>
         </ul>
-        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <img src="./img/Configuracio de la xarxa.png" alt="Captura de pantalla de l'apartat de configuració de xarxa del sistema operatiu">
+        <img src="./img/Comprobacio de la xarxa.png" alt="Captura de pantalla que mostra l'estat de la xarxa i la connexió a internet amb un ping a google.com">
+        <p>És automatica ja que la xarxa NAT te un servei de DHCP integrat, per lo qual no cal configurar 
+          manualment les adreces IP. Si tinguesem la interficie en mode pont, hauríem de configurar manualment 
+          les adreces IP si la xarxa no tingues un servei de DHCP.</p>
         <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
       </article>
       <article class="apartat" id="apartat3">
