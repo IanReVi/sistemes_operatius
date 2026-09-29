@@ -221,6 +221,17 @@ h1, h2 { color: var(--mari); }
 .apartat ul { padding-left: 22px; }
 .apartat li { margin: 4px 0; }
 .tornar-index { font-size: 0.85rem; }
+.comanda-terminal {
+  display: inline-block;
+  padding: 2px 7px;
+  border: 1px solid #293b2b;
+  border-radius: 5px;
+  background: #101510;
+  color: #70e080;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
 
 /* ---------- Peu de pàgina: llicència i autoria (fix a totes les pàgines) ---------- */
 footer.peu {
