@@ -17,6 +17,27 @@
 
 * { box-sizing: border-box; }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes aparicio-de-dalt-a-baix {
+  from {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0.6;
+  }
+  to {
+    clip-path: inset(0);
+    opacity: 1;
+  }
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
@@ -95,6 +116,13 @@ main { padding-bottom: 50px; }
   padding: 32px 34px;
   position: relative;
   z-index: 1;
+  animation: aparicio-de-dalt-a-baix 700ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panell {
+    animation: none;
+  }
 }
 
 /* ---------- Portada ---------- */
@@ -201,6 +229,11 @@ h1, h2 { color: var(--mari); }
   color: var(--tinta-suau);
 }
 .taula-apartats td:first-child, .taula-apartats th:first-child { width: 46px; color: var(--tinta-suau); }
+.taula-apartats tr.subapartat-index td:first-child {
+  width: 64px;
+  padding-left: 22px;
+  font-size: 0.9rem;
+}
 .taula-apartats tr:hover td { background: var(--fons); }
 .taula-apartats a { font-weight: 600; }
 
@@ -212,11 +245,47 @@ h1, h2 { color: var(--mari); }
   border-top: 1px solid var(--vora);
 }
 .apartat h2 { margin-top: 0; }
+.apartat h3 { margin: 22px 0 10px; }
+.apartat h4 { margin: 18px 0 8px; }
+.apartat p { margin: 0 0 12px; }
+.apartat ul, .apartat ol { margin: 8px 0 14px; }
+.apartat pre { margin: 8px 0 14px; }
 .apartat img {
+  display: block;
   max-width: 100%;
+  height: auto;
   border-radius: var(--radi);
   border: 1px solid var(--vora);
-  margin: 14px 0;
+  margin: 0;
+}
+.apartat figure {
+  margin: 8px 0;
+}
+.apartat figure + figure {
+  margin-top: 0;
+}
+.apartat figcaption {
+  margin-top: 6px;
+  color: var(--tinta-suau);
+  font-size: 0.9rem;
+}
+.captura-pendent {
+  margin: 10px 0 14px;
+  padding: 14px 18px;
+  border: 1px dashed var(--teal);
+  border-radius: var(--radi);
+  background: var(--fons);
+}
+.captura-pendent figcaption {
+  color: var(--mari);
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 0;
+}
+.captura-pendent p {
+  margin: 8px 0 0;
+  color: var(--tinta-suau);
+  font-size: 0.9rem;
 }
 .apartat ul { padding-left: 22px; }
 .apartat li { margin: 4px 0; }
@@ -231,6 +300,13 @@ h1, h2 { color: var(--mari); }
   font-family: "Cascadia Code", Consolas, monospace;
   font-size: 0.9em;
   white-space: nowrap;
+}
+pre code.comanda-terminal {
+  display: table;
+  width: max-content;
+  max-width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /* ---------- Peu de pàgina: llicència i autoria (fix a totes les pàgines) ---------- */

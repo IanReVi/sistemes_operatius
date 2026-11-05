@@ -27,30 +27,378 @@
         <tbody>
           <tr>
             <td>1</td>
-            <td><a href="#apartat1">Gestors de paquets</a></td>
+            <td><a href="#apartat1">Sistemes de fitxers i particions</a></td>
+          </tr>
+          <tr class="subapartat-index">
+            <td>1.1</td>
+            <td><a href="#apartat1-1">Teoria</a></td>
+          </tr>
+          <tr class="subapartat-index">
+            <td>1.2</td>
+            <td><a href="#apartat1-2">Pràctica</a></td>
           </tr>
           <tr>
             <td>2</td>
-            <td><a href="#apartat2">Permisos i propietaris d'arxius</a></td>
+            <td><a href="#apartat2">Gestió de processos</a></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><a href="#apartat3">Còpies de seguretat i automatització de tasques</a></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>
+              <a href="#apartat4">Gestió d’usuaris, grups i permisos</a>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><a href="#apartat5">Quotes de disc</a></td>
           </tr>
         </tbody>
       </table>
 
       <article class="apartat" id="apartat1">
-        <h2>1. Gestors de paquets</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. El gestor de
-          paquets permet <strong>instal·lar, actualitzar i eliminar</strong>
-          programari de manera controlada.</p>
-        <ul>
-          <li>Actualitzar la llista de paquets disponibles.</li>
-          <li>Instal·lar un paquet nou.</li>
-          <li>Eliminar un paquet que ja no es fa servir.</li>
-        </ul>
+        <h2>1. Sistemes de fitxers i particions</h2>
+        <section id="apartat1-1">
+          <h3>1.1 Teoria</h3>
+          <p>Per entendre com s'emmagatzemen les dades, cal distingir l'estructura física del disc,
+            la manera com es divideix i la forma com el sistema operatiu organitza els fitxers.</p>
+          <ul>
+            <li><a href="#estructura-fisica">Estructura física d’un disc</a></li>
+            <li><a href="#estructura-logica">Estructura lògica d’un disc</a></li>
+            <li><a href="#estructura-informacio">Estructura de la informació</a></li>
+            <li><a href="#sistemes-fitxers">Sistemes de fitxers</a></li>
+            <li><a href="#tipus-formatatge">Tipus de formatatge</a></li>
+          </ul>
+
+          <section id="estructura-fisica">
+          <h4>Estructura física d’un disc</h4>
+          <p>L’estructura física descriu com s’emmagatzema la informació al dispositiu. En un disc dur
+            mecànic (HDD), les dades es guarden en plats giratoris: cada superfície es divideix en
+            pistes i sectors. En un SSD no hi ha plats ni pistes; les dades es guarden en memòria
+            flaix, però el dispositiu també presenta blocs d’adreces al sistema operatiu.</p>
+          <p>Un <strong>sector</strong> és la unitat d’adreçament de baix nivell del dispositiu. La
+            mida física del sector depèn del maquinari; són habituals els sectors físics de
+            4.096 bytes. Alguns discs exposen sectors lògics de 512 bytes tot i escriure físicament
+            en unitats de 4.096 bytes (format 512e). Per això, la mida de sector que informa el
+            sistema pot ser diferent de la mida física real.</p>
+          </section>
+
+          <section id="estructura-logica">
+          <h4>Estructura lògica d’un disc: MBR i GPT</h4>
+          <p>Abans de crear sistemes de fitxers, el disc es pot dividir en <strong>particions</strong>.
+            La taula de particions descriu on comença i on acaba cadascuna. Els dos formats més
+            habituals són MBR i GPT:</p>
+          <ul>
+            <li><strong>MBR (Master Boot Record):</strong> és un format antic i senzill, amb un límit
+              habitual d’uns 2 TiB per disc quan s’utilitzen sectors lògics de 512 bytes. Admet fins
+              a quatre particions primàries; per superar aquest límit se solia crear una partició
+              estesa amb particions lògiques a l’interior.</li>
+            <li><strong>GPT (GUID Partition Table):</strong> és el format modern, pensat per a discs
+              grans i per crear moltes particions sense el límit de quatre primàries de MBR. També
+              manté còpies de la taula i dades de comprovació per detectar corrupció.</li>
+          </ul>
+          <p>La tria depèn de la mida del disc, del sistema operatiu i del microprogramari amb què
+            s’arrenca l’ordinador. GPT s’utilitza habitualment amb UEFI i és l’opció recomanada en
+            equips actuals; MBR es manté sobretot per compatibilitat amb equips o sistemes antics.
+            MBR/GPT són formats de particionament, mentre que BIOS/UEFI són modes d’arrencada: la
+            compatibilitat entre ells depèn de l’equip i del sistema operatiu.</p>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 11-50-19.png"
+              alt="Informació dels discs, sectors i particions de l’ordinador">
+          </figure>
+          </section>
+
+          <section id="estructura-informacio">
+          <h4>Estructura de la informació: partició, volum i sistema de fitxers</h4>
+          <p>Una <strong>partició</strong> és una regió del disc definida a la taula de particions.
+            És una divisió lògica del dispositiu, encara que delimita un espai concret del disc.
+            Un <strong>volum</strong> és una unitat lògica que el sistema operatiu pot utilitzar i
+            muntar. Sovint un volum correspon a una sola partició, però també pot agrupar diverses
+            particions o dispositius.</p>
+          <p>Sobre el volum es crea un <strong>sistema de fitxers</strong>, que organitza directoris,
+            fitxers i les metadades necessàries per trobar-ne les dades. Per tant, particionar i
+            formatar no són el mateix: la partició delimita l’espai i el formatatge hi crea
+            l’estructura del sistema de fitxers.</p>
+          </section>
+
+          <section id="sistemes-fitxers">
+          <h4>Sistemes de fitxers, blocs i fragmentació</h4>
+          <p>El sistema operatiu adreça el disc mitjançant sectors lògics, però el sistema de fitxers
+            assigna l’espai en unitats pròpies anomenades <strong>blocs</strong> (o clústers en
+            alguns sistemes). La mida del bloc es tria quan es crea el sistema de fitxers, sovint
+            durant la instal·lació o el formatatge, i no necessàriament es pot canviar després sense
+            tornar-lo a crear. Per exemple, <code>tune2fs -l</code> permet consultar dades d’un
+            sistema ext, com la mida dels blocs.</p>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 11-51-12.png"
+              alt="Consulta de la mida dels blocs d’un sistema de fitxers ext4 amb tune2fs">
+          </figure>
+          <p>Una mida de bloc gran pot ser eficient per a fitxers grans, però pot desaprofitar més
+            espai amb molts fitxers petits: és la <strong>fragmentació interna</strong>. Una mida
+            petita redueix aquest desaprofitament, però pot requerir més metadades i operacions.
+            També cal triar el sistema de fitxers segons la compatibilitat amb els sistemes
+            operatius i dispositius que hagin d’accedir a les dades (per exemple, ext4, NTFS o exFAT).</p>
+          <p>La <strong>fragmentació externa</strong> apareix quan les parts d’un fitxer queden
+            repartides en zones no contigües perquè s’han creat i esborrat fitxers amb el temps.
+            Això pot alentir els HDD, on el capçal ha de moure’s entre zones del disc. En aquests
+            discs, la desfragmentació pot reorganitzar les dades; en SSD no s’ha d’aplicar de manera
+            rutinària, perquè l’accés no depèn d’un capçal mecànic i les escriptures addicionals
+            poden augmentar el desgast.</p>
+          <p>Per exemple, un fitxer de text pot ocupar només <strong>15 bytes</strong> de contingut,
+            però si el bloc d’assignació és de <strong>4.096 bytes (4 KiB)</strong>, el sistema hi
+            reserva com a mínim un bloc. Per això, <code>ls -l</code> mostra la mida lògica del
+            fitxer i <code>du -sh</code> aproxima l’espai ocupat al disc:</p>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-08-35.png"
+              alt="Comparació entre la mida lògica de 15 bytes i els 4 KiB ocupats al disc">
+          </figure>
+          </section>
+
+          <section id="tipus-formatatge">
+          <h4>Tipus de formatatge</h4>
+          <p>En parlar de formatatge es poden trobar aquests nivells, tot i que la terminologia
+            varia i els discs actuals automatitzen moltes tasques:</p>
+          <ul>
+            <li><strong>Baix nivell:</strong> organitza físicament el suport en sectors i pistes.
+              En els discs moderns, aquesta operació es fa durant la fabricació i no és un formatatge
+              que l’usuari normalment pugui repetir. Escriure zeros al disc no equival a fer un
+              formatatge físic de baix nivell.</li>
+            <li><strong>Nivell mitjà:</strong> sovint s’utilitza per referir-se a crear la taula de
+              particions i les particions. La denominació no és universal. Les eines també poden
+              comprovar sectors o marcar-ne alguns com a defectuosos, però no reparen físicament
+              el suport; els discs moderns gestionen sectors defectuosos amb el seu microprogramari.</li>
+            <li><strong>Alt nivell:</strong> crea les estructures del sistema de fitxers, com ara
+              directoris inicials i metadades. Un formatatge ràpid normalment recrea aquestes
+              estructures sense esborrar el contingut de cada sector, de manera que les dades
+              anteriors poden continuar recuperables fins que se sobreescriguin. El comportament
+              d’un formatatge complet depèn del sistema operatiu i de l’eina utilitzada.</li>
+          </ul>
+          </section>
+        </section>
+
+        <section id="apartat1-2">
+          <h3>1.2 Pràctica</h3>
+          <h4>Recuperació de fitxers després d’un formatatge</h4>
+          <p>En aquesta pràctica he comprovat què passa quan es formata un disc i si és possible
+            recuperar-ne els fitxers. Per evitar modificar els discs reals de l’ordinador, he
+            treballat amb un fitxer anomenat <code>disc.img</code>, que fa de disc virtual.</p>
+          <p class="consell"><strong>Precaució:</strong> les ordres amb <code>dd</code>,
+            <code>mkfs.ext4</code> i <code>rm</code> poden destruir dades si s’apliquen al fitxer o
+            dispositiu equivocat. En aquesta pràctica, <code>of=disc.img</code> i les altres
+            ordres s’han d’executar sempre des de <code>~/provesiso</code>, sobre el fitxer virtual,
+            mai sobre un disc real com ara <code>/dev/sda</code> o <code>/dev/nvme0n1</code>.</p>
+
+          <h4>Preparació</h4>
+          <p>He comprovat que estic en <code>~/provesiso</code>. Després
+            he copiat a aquesta carpeta una foto PNG i un PDF, amb els noms
+            <code>'Captura de pantalla de 2026-10-20 12-08-35.png'</code> i <code>'RA2NF1. Disseny lògic de bases de dades.pdf'</code>, i he creat un fitxer de text amb el text corresponent.</p>
+          <p>Amb <code>ls -l</code> he verificat que hi havia els tres fitxers abans de començar.</p>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-11-05 13-45-52.png"
+              alt="Comprovació de la presència dels fitxers de prova amb ls -l">
+          </figure>
+
+          <h4>1. Crear el disc virtual</h4>
+          <p>He creat un fitxer de 200 MiB amb zeros, que farà de disc virtual:</p>
+          <pre>
+            <code class="comanda-terminal">dd if=/dev/zero of=disc.img bs=1M count=200 status=progress</code>
+          </pre>
+          <p><code>if=/dev/zero</code> és l’origen dels zeros i <code>of=disc.img</code> és el
+            fitxer de destinació. El paràmetre <strong><code>count=200</code> és imprescindible</strong>:
+            limita l’escriptura a 200 blocs d’1 MiB. Si s’omet, <code>/dev/zero</code> no s’acaba
+            i <code>dd</code> pot continuar omplint el disc de l’ordinador. També he tingut en
+            compte que <code>dd</code> sobreescriu sense demanar confirmació si
+            <code>disc.img</code> ja existeix. Si la condició no es compleix perquè el fitxer ja
+            existeix, no continuo: primer comprovo què conté i decideixo si el vull conservar o
+            eliminar.</p>
+          <p>Després de crear-lo, he verificat que tenia la mida esperada:</p>
+          <pre>
+            <code class="comanda-terminal"># ls -lh disc.img</code>
+          </pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-11-05 13-45-59.png"
+              alt="Verificació de la mida del disc virtual">
+          </figure>
+
+          <h4>2. Donar format al disc i copiar-hi els fitxers</h4>
+          <p>He creat un sistema de fitxers ext4 dins del fitxer virtual:</p>
+          <pre>
+            <code class="comanda-terminal"># mkfs.ext4 disc.img</code>
+          </pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-25-52.png"
+              alt="Format ext4, fitxers copiats al volum i hashes dels originals.">
+          </figure>
+          <p>A continuació l’he muntat en una carpeta perquè es pogués utilitzar com una unitat:</p>
+          <pre>
+            <code class="comanda-terminal"># sudo mkdir -p /mnt/prova
+# sudo mount -o loop disc.img /mnt/prova</code>
+          </pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-26-56.png"
+              alt="Contingut de la imatge després del formatatge; s’hi veu que els fitxers originals ja no apareixen.">
+          </figure>
+          <p>L’opció <code>-o loop</code> indica que es munta un fitxer d’imatge, no un disc físic.
+            He copiat els fitxers de prova, n’he comprovat el contingut i he calculat les empremtes
+            SHA-256 dels originals:</p>
+          <pre><code class="comanda-terminal"># sudo cp 'Captura de pantalla de 2026-10-20 12-08-35.png' 'RA2NF1. Disseny lògic de bases de dades.pdf' notes.txt /mnt/prova/
+# ls -l /mnt/prova
+# sha256sum 'Captura de pantalla de 2026-10-20 12-08-35.png' 'RA2NF1. Disseny lògic de bases de dades.pdf' notes.txt &gt; originals.sha
+# cat originals.sha</code>
+          </pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-29-45.png"
+              alt="ls -l mostra els fitxers copiats i sha256sum calcula els hashes dels originals">
+          </figure>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-30-28.png"
+              alt="Contingut del fitxer originals.sha amb els hashes dels fitxers originals">
+          </figure>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-33-25.png"
+              alt="Contingut del fitxer originals.sha amb els hashes dels fitxers originals">
+          </figure>
+          <p>He guardat els hashes originals per poder comparar-los amb els fitxers recuperats.
+            Finalment, he desmuntat la imatge abans de tornar-la a formatar:</p>
+          <pre><code class="comanda-terminal"># sudo umount /mnt/prova</code></pre>
+          <p>He fet servir <code>umount</code> (sense la primera «n»). Si el sistema indica que el
+            volum està ocupat, cal tancar les finestres o terminals que hi estiguin accedint abans
+            de repetir l’ordre.</p>
+
+          <h4>3. Tornar a formatar i observar el resultat</h4>
+          <p>Amb la imatge desmuntada i des de <code>~/provesiso</code>, he recreat el sistema de
+            fitxers sense demanar que es descarten els blocs de dades:</p>
+          <pre><code class="comanda-terminal"># mkfs.ext4 -E nodiscard disc.img</code></pre>
+          <p>Quan l’eina m’ha avisat que <code>disc.img</code> ja contenia un sistema ext4, he
+            comprovat que el nom del fitxer era correcte i he confirmat l’operació. Després he
+            muntat la imatge, he llistat el contingut i l’he desmuntada:</p>
+          <pre>
+            <code class="comanda-terminal"># sudo mount -o loop disc.img /mnt/prova
+# ls -l /mnt/prova
+# sudo umount /mnt/prova</code>
+          </pre>
+          <p>Els fitxers ja no apareixien al directori: el formatatge havia recreat les estructures
+            del sistema de fitxers, però el contingut dels fitxers encara podia romandre en blocs
+            no sobreescrits.</p>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-36-41.png"
+              alt="Contingut de la imatge després del formatatge; s’hi veu que els fitxers originals ja no apareixen.">
+          </figure>
+
+          <h4>4. Recuperar i comprovar els fitxers</h4>
+          <p>He utilitzat PhotoRec per buscar fitxers reconeixibles dins de la imatge i guardar-los
+            en una carpeta diferent de la imatge original:</p>
+          <p>He instal·lat PhotoRec:</p>
+          <pre>
+            <code class="comanda-terminal"># sudo apt install testdisk</code>
+          </pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-38-37.png"
+              alt="Instal·lació de PhotoRec amb apt">
+          </figure>
+          <p>He executat PhotoRec:</p>
+          <pre>
+            <code class="comanda-terminal"># photorec /d recup /cmd disc.img options,fileopt,everything,enable,search</code>
+          </pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-38-53.png"
+              alt="Execució de PhotoRec per recuperar fitxers">
+          </figure>
+          <p>Després he inspeccionat els fitxers trobats i n’he calculat els hashes:</p>
+          <pre>
+            <code class="comanda-terminal"># ls recup.1
+# sha256sum recup.1/*</code>
+          </pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-40-11.png"
+              alt="ls mostra els fitxers recuperats i sha256sum calcula els hashes dels fitxers recuperats">
+          </figure>
+          <p>PhotoRec pot assignar noms nous als fitxers recuperats perquè pot haver perdut els noms
+            originals en recrear-se l’índex del sistema de fitxers. He comparat els hashes de la
+            foto i del PDF amb els valors guardats a <code>originals.sha</code>; si coincideixen,
+            els continguts són idèntics byte a byte. El fitxer de text pot no aparèixer entre els
+            resultats perquè no té una capçalera pròpia fàcil d’identificar. Per buscar-hi la frase
+            he executat:</p>
+          <pre><code class="comanda-terminal"># strings -e S disc.img | grep pizza</code></pre>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-45-50.png"
+              alt="Resultat de la cerca de la frase dins de la imatge amb strings i grep">
+          </figure>
+
+          <h4>5. Sobreescriure el disc virtual amb zeros</h4>
+          <p>Per comprovar què passa quan les dades se sobreescriuen, he escrit zeros sobre tota
+            la imatge virtual.</p>
+          <pre>
+            <code class="comanda-terminal"># dd if=/dev/zero of=disc.img bs=1M count=200 conv=notrunc status=progress</code>
+          </pre>
+          <p>He intentat recuperar els fitxers una altra vegada i he tornat a buscar el text:</p>
+          <pre>
+            <code class="comanda-terminal"># photorec /d recup_zeros /cmd disc.img options,fileopt,everything,enable,search
+# ls recup_zeros.1
+# strings -e S disc.img | grep pizza</code>
+          </pre>
+          <p>Després de sobreescriure la imatge, PhotoRec no ha trobat els fitxers anteriors
+            i la cerca de la frase no ha mostrat cap resultat.</p>
+          <figure>
+            <img src="img/Captura de pantalla de 2026-10-20 12-48-17.png"
+              alt="Resultat de la recuperació després d’escriure zeros: no s’han trobat fitxers ni la frase">
+            <img src="img/Captura de pantalla de 2026-10-20 12-48-49.png"
+              alt="Resultat de la cerca de la frase dins de la imatge després d’escriure zeros: no s’ha trobat res">
+          </figure>
+
+          <h4>Preguntes de la pràctica</h4>
+          <ol>
+            <li>
+              <p><strong>Després de la part 3, el disc semblava buit. On eren realment els fitxers?</strong>
+                Els continguts continuaven als mateixos blocs de dades del disc virtual. En tornar
+                a formatar-lo s’havia recreat el sistema de fitxers i s’havia esborrat la informació
+                que permetia localitzar els fitxers, però no s’havien sobreescrit immediatament les
+                dades que contenien.</p>
+            </li>
+            <li>
+              <p><strong>Per què els fitxers recuperats tenen noms diferents dels originals?</strong>
+                Perquè els noms no formen part del contingut del fitxer: el sistema de fitxers els
+                guarda en les seves metadades. En perdre’s aquesta informació, PhotoRec recupera el
+                contingut i li assigna noms nous.</p>
+            </li>
+            <li>
+              <p><strong>Com puc demostrar que la foto recuperada és exactament la mateixa que l’original?</strong>
+                Comparant els seus hashes SHA-256, calculats abans i després de la recuperació. Si
+                coincideixen, els dos fitxers tenen el mateix contingut byte a byte.</p>
+            </li>
+            <li>
+              <p><strong>Per què PhotoRec ha trobat la foto i el PDF, però no el fitxer
+                <code>notes.txt</code>? Com l’he trobat igualment?</strong> Les imatges i els PDF
+                solen tenir capçaleres que permeten identificar-ne el tipus; un fitxer de text
+                pla, en canvi, no té una capçalera pròpia fiable. He pogut trobar-ne el contingut
+                llegint les cadenes de text que encara quedaven a la imatge del disc i cercant-hi
+                una paraula de la frase amb <code>strings</code> i <code>grep</code>.</p>
+            </li>
+            <li>
+              <p><strong>Quin nivell de formatatge he fet a la part 3 i quin a la part 5?</strong>
+                A la part 3 he fet un formatatge d’alt nivell, perquè he recreat el sistema de
+                fitxers. A la part 5 he sobreescrit amb zeros tot el fitxer que feia de disc virtual.
+                En la classificació de la pràctica, això correspon al formatatge de baix nivell;
+                tècnicament, però, no és un formatatge físic de fàbrica, sinó una sobreescriptura
+                de la imatge.</p>
+            </li>
+            <li>
+              <p><strong>Quin formatatge faria abans de vendre un USB que havia contingut fotos personals, i per què?</strong>
+                Faria servir la funció d’esborrat segur o de sanejament que recomane el fabricant
+                per a aquell dispositiu, perquè un formatatge normal no garanteix que les dades
+                s’hagin esborrat. No confiaria només a escriure zeros: en una memòria flaix, la
+                gestió interna dels blocs pot fer que això no sobreescrigui totes les dades físiques.
+                Si no pogués verificar un sanejament fiable, no vendria el dispositiu amb dades
+                sensibles.</p>
+            </li>
+          </ol>
+        </section>
         <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
       </article>
       <article class="apartat" id="apartat2">
-        <h2>2. Permisos i propietaris d'arxius</h2>
+        <h2>2. Gestió de processos</h2>
         <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
           ut aliquip ex ea commodo consequat. Cada arxiu té un
           <strong>propietari, un grup i uns permisos</strong> que en determinen
@@ -59,6 +407,19 @@
         <img src="../img/exemple.svg" alt="Exemple de captura de pantalla dels permisos d'un arxiu">
         <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
           dolore eu fugiat nulla pariatur.</p>
+        <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+      </article>
+      <article class="apartat" id="apartat4">
+        <h2>4. Gestió d’usuaris, grups i permisos</h2>
+        **/Fer un petit index per a cada apartat/**
+        <section id="apartat4-1">
+          <h3>4.1 Gestió d’usuaris i grups</h3>
+          <p>En aquest subapartat es descriu la gestió dels comptes d’usuari i dels grups del sistema.</p>
+        </section>
+        <section id="apartat4-2">
+          <h3>4.2 Permisos</h3>
+          <p>En aquest subapartat s’explica com els permisos determinen l’accés als fitxers i directoris.</p>
+        </section>
         <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
       </article>
     </section>
