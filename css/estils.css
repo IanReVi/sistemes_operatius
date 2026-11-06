@@ -287,6 +287,14 @@ h1, h2 { color: var(--mari); }
   color: var(--tinta-suau);
   font-size: 0.9rem;
 }
+.revisio {
+  padding: 10px 12px;
+  border-left: 5px solid #b42318;
+  border-radius: 4px;
+  background: #fee4e2;
+  color: #7a271a;
+}
+.revisio strong { color: #7a271a; }
 .apartat ul { padding-left: 22px; }
 .apartat li { margin: 4px 0; }
 .tornar-index { font-size: 0.85rem; }

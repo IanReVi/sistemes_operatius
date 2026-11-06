@@ -35,7 +35,11 @@
           </tr>
           <tr class="subapartat-index">
             <td>1.2</td>
-            <td><a href="#apartat1-2">Pràctica</a></td>
+            <td><a href="#apartat1-2">Pràctica 1: recuperació de fitxers</a></td>
+          </tr>
+          <tr class="subapartat-index">
+            <td>1.3</td>
+            <td><a href="#apartat1-3">Pràctica 2: particions i muntatge</a></td>
           </tr>
           <tr>
             <td>2</td>
@@ -50,6 +54,14 @@
             <td>
               <a href="#apartat4">Gestió d’usuaris, grups i permisos</a>
             </td>
+          </tr>
+          <tr class="subapartat-index">
+            <td>4.1</td>
+            <td><a href="#apartat4-1">Gestió d’usuaris i grups</a></td>
+          </tr>
+          <tr class="subapartat-index">
+            <td>4.2</td>
+            <td><a href="#apartat4-2">Permisos</a></td>
           </tr>
           <tr>
             <td>5</td>
@@ -107,6 +119,7 @@
           <figure>
             <img src="img/Captura de pantalla de 2026-10-20 11-50-19.png"
               alt="Informació dels discs, sectors i particions de l’ordinador">
+            <figcaption>La sortida també compara els sectors lògics de 512 bytes amb els sectors físics de 4096 bytes.</figcaption>
           </figure>
           </section>
 
@@ -134,6 +147,7 @@
           <figure>
             <img src="img/Captura de pantalla de 2026-10-20 11-51-12.png"
               alt="Consulta de la mida dels blocs d’un sistema de fitxers ext4 amb tune2fs">
+            <figcaption>En aquest volum ext4, cada bloc ocupa 4096 bytes.</figcaption>
           </figure>
           <p>Una mida de bloc gran pot ser eficient per a fitxers grans, però pot desaprofitar més
             espai amb molts fitxers petits: és la <strong>fragmentació interna</strong>. Una mida
@@ -151,8 +165,9 @@
             reserva com a mínim un bloc. Per això, <code>ls -l</code> mostra la mida lògica del
             fitxer i <code>du -sh</code> aproxima l’espai ocupat al disc:</p>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-08-35.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-08-35.png"
               alt="Comparació entre la mida lògica de 15 bytes i els 4 KiB ocupats al disc">
+            <figcaption><code>du</code> arrodoneix l’espai ocupat a 4 KiB, mentre que <code>ls</code> mostra els 15 bytes de contingut.</figcaption>
           </figure>
           </section>
 
@@ -196,8 +211,9 @@
             <code>'Captura de pantalla de 2026-10-20 12-08-35.png'</code> i <code>'RA2NF1. Disseny lògic de bases de dades.pdf'</code>, i he creat un fitxer de text amb el text corresponent.</p>
           <p>Amb <code>ls -l</code> he verificat que hi havia els tres fitxers abans de començar.</p>
           <figure>
-            <img src="img/Captura de pantalla de 2026-11-05 13-45-52.png"
+            <img src="img/practica1/Captura de pantalla de 2026-11-05 13-45-52.png"
               alt="Comprovació de la presència dels fitxers de prova amb ls -l">
+            <figcaption>La llista mostra les mides de la imatge, el document PDF i les notes abans de començar.</figcaption>
           </figure>
 
           <h4>1. Crear el disc virtual</h4>
@@ -205,7 +221,7 @@
           <pre>
             <code class="comanda-terminal">dd if=/dev/zero of=disc.img bs=1M count=200 status=progress</code>
           </pre>
-          <p><code>if=/dev/zero</code> és l’origen dels zeros i <code>of=disc.img</code> és el
+          <p class="revisio"><strong>Revisa abans de lliurar:</strong> <code>if=/dev/zero</code> és l’origen dels zeros i <code>of=disc.img</code> és el
             fitxer de destinació. El paràmetre <strong><code>count=200</code> és imprescindible</strong>:
             limita l’escriptura a 200 blocs d’1 MiB. Si s’omet, <code>/dev/zero</code> no s’acaba
             i <code>dd</code> pot continuar omplint el disc de l’ordinador. També he tingut en
@@ -218,8 +234,9 @@
             <code class="comanda-terminal"># ls -lh disc.img</code>
           </pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-11-05 13-45-59.png"
+            <img src="img/practica1/Captura de pantalla de 2026-11-05 13-45-59.png"
               alt="Verificació de la mida del disc virtual">
+            <figcaption><code>ls -lh</code> presenta la mida de la imatge en unitats llegibles i permet comprovar-ne el resultat.</figcaption>
           </figure>
 
           <h4>2. Donar format al disc i copiar-hi els fitxers</h4>
@@ -228,8 +245,9 @@
             <code class="comanda-terminal"># mkfs.ext4 disc.img</code>
           </pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-25-52.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-25-52.png"
               alt="Format ext4, fitxers copiats al volum i hashes dels originals.">
+            <figcaption>La sortida de <code>mkfs.ext4</code> indica que s’han creat 51.200 blocs de 4 KiB i mostra l’UUID generat.</figcaption>
           </figure>
           <p>A continuació l’he muntat en una carpeta perquè es pogués utilitzar com una unitat:</p>
           <pre>
@@ -237,8 +255,9 @@
 # sudo mount -o loop disc.img /mnt/prova</code>
           </pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-26-56.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-26-56.png"
               alt="Contingut de la imatge després del formatatge; s’hi veu que els fitxers originals ja no apareixen.">
+            <figcaption>El muntatge de la imatge acabada de formatar es completa sense mostrar cap error.</figcaption>
           </figure>
           <p>L’opció <code>-o loop</code> indica que es munta un fitxer d’imatge, no un disc físic.
             He copiat els fitxers de prova, n’he comprovat el contingut i he calculat les empremtes
@@ -249,16 +268,19 @@
 # cat originals.sha</code>
           </pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-29-45.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-29-45.png"
               alt="ls -l mostra els fitxers copiats i sha256sum calcula els hashes dels originals">
+            <figcaption>La còpia inclou els tres fitxers de prova al directori muntat.</figcaption>
           </figure>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-30-28.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-30-28.png"
               alt="Contingut del fitxer originals.sha amb els hashes dels fitxers originals">
+            <figcaption>La llista del volum mostra també <code>lost+found</code>, creat pel sistema ext4.</figcaption>
           </figure>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-33-25.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-33-25.png"
               alt="Contingut del fitxer originals.sha amb els hashes dels fitxers originals">
+            <figcaption>El fitxer de control desa un resum SHA-256 per a cadascun dels tres originals.</figcaption>
           </figure>
           <p>He guardat els hashes originals per poder comparar-los amb els fitxers recuperats.
             Finalment, he desmuntat la imatge abans de tornar-la a formatar:</p>
@@ -283,8 +305,9 @@
             del sistema de fitxers, però el contingut dels fitxers encara podia romandre en blocs
             no sobreescrits.</p>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-36-41.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-36-41.png"
               alt="Contingut de la imatge després del formatatge; s’hi veu que els fitxers originals ja no apareixen.">
+            <figcaption>Després de recrear ext4 només hi apareix <code>lost+found</code>; els fitxers ja no figuren al directori.</figcaption>
           </figure>
 
           <h4>4. Recuperar i comprovar els fitxers</h4>
@@ -295,16 +318,18 @@
             <code class="comanda-terminal"># sudo apt install testdisk</code>
           </pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-38-37.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-38-37.png"
               alt="Instal·lació de PhotoRec amb apt">
+            <figcaption>APT resol les dependències i prepara el paquet <code>testdisk</code>, que inclou PhotoRec.</figcaption>
           </figure>
           <p>He executat PhotoRec:</p>
           <pre>
             <code class="comanda-terminal"># photorec /d recup /cmd disc.img options,fileopt,everything,enable,search</code>
           </pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-38-53.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-38-53.png"
               alt="Execució de PhotoRec per recuperar fitxers">
+            <figcaption>PhotoRec s’inicia en mode de recuperació sobre <code>disc.img</code>.</figcaption>
           </figure>
           <p>Després he inspeccionat els fitxers trobats i n’he calculat els hashes:</p>
           <pre>
@@ -312,10 +337,11 @@
 # sha256sum recup.1/*</code>
           </pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-40-11.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-40-11.png"
               alt="ls mostra els fitxers recuperats i sha256sum calcula els hashes dels fitxers recuperats">
+            <figcaption>La sortida permet veure els noms nous assignats als fitxers recuperats i els seus resums calculats.</figcaption>
           </figure>
-          <p>PhotoRec pot assignar noms nous als fitxers recuperats perquè pot haver perdut els noms
+        <p>PhotoRec pot assignar noms nous als fitxers recuperats perquè pot haver perdut els noms
             originals en recrear-se l’índex del sistema de fitxers. He comparat els hashes de la
             foto i del PDF amb els valors guardats a <code>originals.sha</code>; si coincideixen,
             els continguts són idèntics byte a byte. El fitxer de text pot no aparèixer entre els
@@ -323,8 +349,9 @@
             he executat:</p>
           <pre><code class="comanda-terminal"># strings -e S disc.img | grep pizza</code></pre>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-45-50.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-45-50.png"
               alt="Resultat de la cerca de la frase dins de la imatge amb strings i grep">
+            <figcaption>La cerca recupera la frase «El meu secret és que m’encanta la pizza amb pinya» del fitxer de text.</figcaption>
           </figure>
 
           <h4>5. Sobreescriure el disc virtual amb zeros</h4>
@@ -342,10 +369,14 @@
           <p>Després de sobreescriure la imatge, PhotoRec no ha trobat els fitxers anteriors
             i la cerca de la frase no ha mostrat cap resultat.</p>
           <figure>
-            <img src="img/Captura de pantalla de 2026-10-20 12-48-17.png"
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-48-17.png"
               alt="Resultat de la recuperació després d’escriure zeros: no s’han trobat fitxers ni la frase">
-            <img src="img/Captura de pantalla de 2026-10-20 12-48-49.png"
+            <figcaption>Després de sobreescriure la imatge, PhotoRec només crea l’informe i no recupera els fitxers anteriors.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica1/Captura de pantalla de 2026-10-20 12-48-49.png"
               alt="Resultat de la cerca de la frase dins de la imatge després d’escriure zeros: no s’ha trobat res">
+            <figcaption><code>grep</code> no retorna cap coincidència en cercar la frase a la imatge sobreescrita.</figcaption>
           </figure>
 
           <h4>Preguntes de la pràctica</h4>
@@ -385,7 +416,7 @@
                 de la imatge.</p>
             </li>
             <li>
-              <p><strong>Quin formatatge faria abans de vendre un USB que havia contingut fotos personals, i per què?</strong>
+              <p class="revisio"><strong>Revisa abans de lliurar — redacció personal:</strong> <strong>Quin formatatge faria abans de vendre un USB que havia contingut fotos personals, i per què?</strong>
                 Faria servir la funció d’esborrat segur o de sanejament que recomane el fabricant
                 per a aquell dispositiu, perquè un formatatge normal no garanteix que les dades
                 s’hagin esborrat. No confiaria només a escriure zeros: en una memòria flaix, la
@@ -395,31 +426,861 @@
             </li>
           </ol>
         </section>
+        <section id="apartat1-3">
+          <h3>1.3 Pràctica 2: particions i muntatge</h3>
+          <h4>Introducció</h4>
+          <p>En aquesta pràctica he treballat amb un disc virtual afegit a la màquina Ubuntu per
+            practicar la creació d’una partició, el formatatge amb ext4 i el muntatge en un
+            directori. També he consultat l’UUID de la partició i he començat a configurar
+            <code>/etc/fstab</code> perquè el sistema la pugui muntar automàticament. Així he pogut
+            veure la diferència entre el disc, la partició, el sistema de fitxers i el punt de
+            muntatge.</p>
+          <p class="consell"><strong>Precaució:</strong> <code>fdisk</code> i les ordres
+            <code>mkfs</code> poden modificar o esborrar dades. Abans d’executar-les cal identificar
+            el disc nou amb <code>lsblk</code> i comprovar que no és el disc del sistema. Les ordres
+            d’aquesta pràctica s’han d’aplicar només al disc virtual que s’ha afegit.</p>
+
+          <h4>1. Identificar el disc virtual</h4>
+          <p>He consultat els dispositius per trobar el disc afegit, que el sistema ha identificat
+            com a <code>/dev/sdb</code>. La captura de la consulta amb <code>fdisk</code> indica una
+            mida de 25 GiB; per això és important comprovar sempre la mida i el nom del dispositiu
+            abans de continuar.</p>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 13-51-01.png"
+              alt="Consulta de fdisk que identifica el dispositiu /dev/sdb i n'indica la mida">
+            <figcaption>Identificació del disc afegit com a <code>/dev/sdb</code>.</figcaption>
+          </figure>
+
+          <h4>2. Crear una partició amb fdisk</h4>
+          <p>He obert el disc amb <code>fdisk</code>, he creat una partició primària de tipus Linux
+            i he desat els canvis. A la captura es veu que he indicat el sector inicial 2048 i el
+            sector final 200000; el resultat és una partició d’uns 96,7 MiB.</p>
+          <pre><code class="comanda-terminal">fdisk /dev/sdb</code></pre>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 13-52-45.png"
+              alt="Creació i escriptura de la primera partició Linux de /dev/sdb amb fdisk">
+            <figcaption>La taula de particions desada conté <code>/dev/sdb1</code>.</figcaption>
+          </figure>
+
+          <h4>3. Crear el sistema de fitxers ext4</h4>
+          <p>He formatat la partició <code>/dev/sdb1</code> amb ext4 i he assignat blocs de 8192
+            bytes:</p>
+          <pre><code class="comanda-terminal">mkfs.ext4 -b 8192 /dev/sdb1</code></pre>
+          <p class="revisio"><strong>Revisa abans de lliurar:</strong> Durant el procés, <code>mkfs.ext4</code> ha avisat que 8192 bytes superen la mida
+            màxima indicada de 4096 bytes; la captura mostra que he continuat i que s’ha creat el
+            sistema de fitxers amb blocs de 8 KiB. La guia proposa blocs de 2048 bytes, de manera
+            que aquest valor és diferent del previst.</p>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 13-53-28.png"
+              alt="Formatatge ext4 de /dev/sdb1 amb mkfs.ext4 i avisos sobre blocs de 8192 bytes">
+            <figcaption>Formatatge ext4 de la primera partició.</figcaption>
+          </figure>
+
+          <h4>4. Muntar la partició i comprovar-ne el contingut</h4>
+          <p>He creat el directori <code>/mnt/particio1</code> i hi he muntat la partició. Després
+            n’he consultat el contingut; en un sistema ext4 acabat de crear hi apareix
+            <code>lost+found</code>.</p>
+          <pre><code class="comanda-terminal">mkdir -p /mnt/particio1
+mount -t ext4 /dev/sdb1 /mnt/particio1
+ls /mnt/particio1</code></pre>
+          <p>També he creat directoris i un fitxer de prova per observar el contingut del punt de
+            muntatge. En desmuntar la partició, els elements que hi havia al directori abans del
+            muntatge tornen a ser visibles; en muntar-la de nou, es mostra el contingut de la
+            partició.</p>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 13-54-30.png"
+              alt="Creació del punt de muntatge i primera prova d'accés a la partició">
+            <figcaption>Preparació de <code>/mnt/particio1</code> i prova inicial.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 13-55-48.png"
+              alt="Muntatge ext4, llistat de lost+found i creació de fitxers i directoris de prova">
+            <figcaption>Comprovació del contingut després de muntar la partició.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 13-56-59.png"
+              alt="Desmuntatge i nou muntatge de /dev/sdb1 al directori /mnt/particio1">
+            <figcaption>En desmuntar i tornar a muntar, es veu el contingut corresponent a cada ubicació.</figcaption>
+          </figure>
+
+          <h4>5. Consultar l’UUID i editar fstab</h4>
+          <p>He consultat l’UUID de <code>/dev/sdb1</code> amb <code>blkid</code> i he obert
+            <code>/etc/fstab</code> amb <code>nano</code>. A la captura hi consta una entrada per
+            muntar la partició ext4 a <code>/mnt/particio1</code>:</p>
+          <pre><code class="comanda-terminal">UUID=&lt;UUID de /dev/sdb1&gt; /mnt/particio1 ext4 defaults 0 0</code></pre>
+          <p class="revisio"><strong>Revisa abans de lliurar:</strong> Fer servir l’UUID evita dependre del nom <code>/dev/sdb1</code>, que pot canviar si
+            varia l’ordre dels discs. Les captures mostren l’edició del fitxer, però no permeten
+            confirmar que els canvis s’hagin desat ni que s’hagin validat amb
+            <code>mount -a</code> o després de reiniciar.</p>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 13-59-23.png"
+              alt="Consulta de l'UUID i del tipus ext4 de /dev/sdb1 amb blkid">
+            <figcaption>Consulta de l’UUID de la partició per identificar-la a <code>fstab</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 14-00-06.png"
+              alt="Obertura de /etc/fstab amb nano per afegir el muntatge de la partició">
+            <figcaption>Edició de la configuració de muntatge automàtic.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica2/Captura de pantalla de 2026-10-22 14-01-56.png"
+              alt="Entrada per a la partició ext4 a /etc/fstab oberta amb nano">
+            <figcaption>L’entrada de <code>fstab</code> es veu encara oberta a <code>nano</code>.</figcaption>
+          </figure>
+        </section>
         <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
       </article>
       <article class="apartat" id="apartat2">
         <h2>2. Gestió de processos</h2>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-          ut aliquip ex ea commodo consequat. Cada arxiu té un
-          <strong>propietari, un grup i uns permisos</strong> que en determinen
-          l'accés.
-        </p>
-        <img src="../img/exemple.svg" alt="Exemple de captura de pantalla dels permisos d'un arxiu">
-        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur.</p>
+        <section id="apartat2-1">
+          <h3>2.1 Pràctica: missió «El servidor va lent»</h3>
+          <p>En aquesta pràctica he simulat una incidència en una màquina Ubuntu: he iniciat diversos
+            processos de prova, n’he observat el consum i els he gestionat mentre una descàrrega
+            simulada s’executava. Per fer-ho he treballat amb els scripts de la carpeta
+            <code>~/missio</code> i dos terminals.</p>
+          <p class="consell"><strong>Precaució:</strong> les ordres per acabar processos s’han
+            d’aplicar només als processos de prova d’aquesta pràctica (<code>minador</code>,
+            <code>espia</code> i <code>backup_nocturn</code>). No s’ha d’utilitzar
+            <code>sudo</code> amb <code>kill</code> ni acabar processos del sistema.</p>
+
+          <h4>Preparar la missió</h4>
+          <p>He creat els scripts <code>minador</code>, <code>espia</code>,
+            <code>backup_nocturn</code>, <code>descarrega.sh</code> i
+            <code>sospitosos.sh</code>, i els he donat permís d’execució. El primer captura
+            mostra els cinc fitxers amb aquest permís.</p>
+          <pre><code class="comanda-terminal">chmod +x minador backup_nocturn espia descarrega.sh sospitosos.sh
+ls -l
+./sospitosos.sh</code></pre>
+          <figure>
+            <img src="img/practica3/1.png"
+              alt="Llistat dels cinc scripts de la missió amb permisos d'execució">
+            <figcaption>Els cinc scripts apareixen executables a <code>~/missio</code>.</figcaption>
+          </figure>
+
+          <h4>1. Reconèixer els processos</h4>
+          <p>He consultat l’arbre dels processos del meu usuari per localitzar els dos
+            <code>minador</code>, <code>espia</code> i <code>backup_nocturn</code>. Les dues
+            captures corresponen a parts de l’arbre, que mostra també els processos fills
+            <code>sleep</code> de l’espia i de la còpia de seguretat.</p>
+          <pre><code class="comanda-terminal">echo $$
+ps
+ps -A | wc -l
+ps -u $USER
+pstree -p $USER</code></pre>
+          <figure>
+            <img src="img/practica3/2.1.png"
+              alt="Part de l'arbre de processos amb backup_nocturn i espia">
+            <figcaption>El primer fragment de l’arbre mostra la còpia de seguretat i l’espia amb els seus processos fills.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica3/2.2.png"
+              alt="Continuació de l'arbre de processos amb els dos processos minador">
+            <figcaption>La continuació de l’arbre mostra els dos processos <code>minador</code>.</figcaption>
+          </figure>
+
+          <h4>2. Localitzar els processos que més CPU consumeixen</h4>
+          <p>He obert <code>top</code> i he ordenat la llista per ús de CPU. La captura mostra els
+            dos processos <code>minador</code> al capdamunt, cadascun amb aproximadament la meitat
+            de la CPU disponible.</p>
+          <pre><code class="comanda-terminal">top
+ps aux --sort=-%cpu | head -6</code></pre>
+          <figure>
+            <img src="img/practica3/3.png"
+              alt="top ordenat per ús de CPU amb els dos processos minador al capdamunt">
+            <figcaption>Els dos <code>minador</code> són els processos amb més ús de CPU en aquesta comprovació.</figcaption>
+          </figure>
+
+          <h4>3. Consultar PID i estat amb ps</h4>
+          <p>He filtrat els processos de la missió per nom i n’he consultat el PID, el procés pare,
+            l’estat, el temps en execució i l’ús de CPU. Les captures <code>4.1</code> i
+            <code>4.2</code> mostren les dades de <code>top</code>, i la <code>4.3</code> recull
+            la cerca de PID i la consulta de columnes seleccionades.</p>
+          <pre><code class="comanda-terminal">pgrep -l 'minador|espia|backup'
+ps -o pid,ppid,user,stat,etime,%cpu,comm -C minador,espia,backup_nocturn</code></pre>
+          <figure>
+            <img src="img/practica3/4.1.png"
+              alt="Vista de top amb els dos processos minador consumint CPU">
+            <figcaption>La vista de processos permet comparar l’ús de CPU dels dos minadors.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica3/4.2.png"
+              alt="Detall de la vista de top amb percentatges de CPU i memòria">
+            <figcaption>El detall de <code>top</code> mostra també l’estat i la memòria dels processos.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica3/4.3.png"
+              alt="Resultat de pgrep i ps amb PID, procés pare, estat, temps i ús de CPU">
+            <figcaption>La consulta associa cada PID al nom del procés i permet veure que el backup i l’espia esperen mentre els minadors executen feina.</figcaption>
+          </figure>
+
+          <h4>4. Passar la descàrrega a segon pla</h4>
+          <p>En un segon terminal he deixat actiu el seguiment del fitxer de progrés. Al primer
+            terminal he iniciat la descàrrega, l’he aturada amb <kbd>Ctrl</kbd> + <kbd>Z</kbd> i
+            n’he consultat els treballs. Després l’he reprès en segon pla amb <code>bg</code>, l’he
+            portat temporalment al primer pla amb <code>fg</code> i l’he tornat a deixar en segon
+            pla. El monitor de l’altra finestra mostra el progrés aturat i després reprès.</p>
+          <pre><code class="comanda-terminal"># Terminal 2
+cd ~/missio
+echo "Encara no ha començat" &gt; progres.txt
+watch -n 1 cat progres.txt
+
+# Terminal 1
+./descarrega.sh
+# Ctrl+Z
+jobs -l
+bg %1
+fg %1
+# Ctrl+Z
+bg %1</code></pre>
+          <figure>
+            <img src="img/practica3/5.png"
+              alt="Dos terminals: gestió de la descàrrega amb jobs, bg i fg, i monitoratge del percentatge">
+            <figcaption>El percentatge es veu al segon terminal mentre el primer mostra els canvis de primer a segon pla.</figcaption>
+          </figure>
+
+          <h4>5. Canviar la prioritat de la descàrrega</h4>
+          <p>He observat la descàrrega i els dos minadors amb <code>top</code>. Primer he intentat
+            augmentar la prioritat sense permisos d’administració i l’ordre ho ha rebutjat; després
+            he repetit el canvi amb <code>sudo</code>. La captura mostra la descàrrega amb
+            <code>NI -10</code>, més del 80 % de CPU i el progrés al 70 %.</p>
+          <pre><code class="comanda-terminal">top -p $(pgrep -d, 'minador|descarrega')
+renice -n -10 -p &lt;PID de descarrega.sh&gt;
+sudo renice -n -10 -p &lt;PID de descarrega.sh&gt;
+top -p $(pgrep -d, 'minador|descarrega')</code></pre>
+          <figure>
+            <img src="img/practica3/6.png"
+              alt="top mostra descarrega.sh amb NI -10 i més del 80 per cent de CPU mentre avança el progrés">
+            <figcaption>Amb el valor nice modificat, la descàrrega rep més temps de CPU que els minadors.</figcaption>
+          </figure>
+
+          <h4>6. Acabar els processos intrusos i pausar la còpia</h4>
+          <p>He acabat els dos <code>minador</code> amb el senyal normal. Després he enviat
+            <code>SIGTERM</code> a <code>espia</code>; el missatge de la captura confirma que el
+            procés no ha acabat amb aquest senyal, així que l’he aturat amb <code>SIGKILL</code>.
+            Finalment, he posat <code>backup_nocturn</code> en pausa amb <code>SIGSTOP</code> i
+            l’he reprès amb <code>SIGCONT</code>, comprovant els estats <code>T</code> i
+            <code>S</code>.</p>
+          <pre><code class="comanda-terminal">pgrep -l minador
+kill &lt;PID minador 1&gt; &lt;PID minador 2&gt;
+pgrep -l espia
+kill &lt;PID espia&gt;
+kill -9 &lt;PID espia&gt;
+pgrep -l backup
+kill -STOP &lt;PID backup_nocturn&gt;
+ps -o pid,stat,comm -p &lt;PID backup_nocturn&gt;
+kill -CONT &lt;PID backup_nocturn&gt;
+ps -o pid,stat,comm -p &lt;PID backup_nocturn&gt;</code></pre>
+          <figure>
+            <img src="img/practica3/7.1.png"
+              alt="L'espia respon a SIGTERM i després desapareix en rebre SIGKILL">
+            <figcaption>El missatge de l’espia confirma que continua actiu després de <code>SIGTERM</code>; la cerca posterior a <code>SIGKILL</code> ja no el troba.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica3/7.2.png"
+              alt="backup_nocturn passa de l'estat T a l'estat S amb SIGSTOP i SIGCONT">
+            <figcaption>La columna <code>STAT</code> canvia a <code>T</code> en aturar el backup i torna a <code>S</code> en reprendre’l.</figcaption>
+          </figure>
+
+          <h4>7. Mantenir la descàrrega en tancar el terminal</h4>
+          <p>Després d’esperar que acabés la primera descàrrega, n’he iniciat una de nova en segon
+            pla i he tancat el terminal. La prova sense <code>nohup</code> s’ha interromput en
+            tancar la finestra. A continuació he iniciat una altra descàrrega amb <code>nohup</code>
+            en segon pla i l’he deixat acabar. La captura final mostra el missatge
+            <code>ubuntu.iso COMPLETADA en 41 s</code> i la consulta de l’arbre del procés.</p>
+          <pre><code class="comanda-terminal">./descarrega.sh &amp;
+# Tancar el terminal i comprovar que s'interromp
+nohup ./descarrega.sh &amp;
+# Tancar el terminal i comprovar el progrés des de l'altre terminal
+pstree -ps $(pgrep descarrega)</code></pre>
+          <figure>
+            <img src="img/practica3/8.png"
+              alt="El fitxer de progrés indica que ubuntu.iso s'ha completat i es consulta l'arbre de processos">
+            <figcaption>La descàrrega ha arribat al 100 %; a la sortida de <code>pstree</code> encara s’hi veu <code>bash</code> com a pare del procés consultat.</figcaption>
+          </figure>
+          <p class="revisio"><strong>Revisa abans de lliurar:</strong> La captura acredita que la descàrrega es va completar, però l’arbre que s’hi mostra
+            encara té un <code>bash</code> com a procés pare. Per tant, no confirma que el procés
+            s’hagués desacoblat del terminal amb <code>nohup</code> en el moment de la consulta.</p>
+        </section>
+        <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+      </article>
+      <article class="apartat" id="apartat3">
+        <h2>3. Còpies de seguretat i automatització de tasques</h2>
+        <p class="revisio"><strong>Revisa abans de lliurar:</strong> aquest apartat encara no està documentat.</p>
         <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
       </article>
       <article class="apartat" id="apartat4">
         <h2>4. Gestió d’usuaris, grups i permisos</h2>
-        **/Fer un petit index per a cada apartat/**
         <section id="apartat4-1">
           <h3>4.1 Gestió d’usuaris i grups</h3>
-          <p>En aquest subapartat es descriu la gestió dels comptes d’usuari i dels grups del sistema.</p>
+          <p>En aquesta pràctica he administrat els comptes i els grups d’un estudi fictici, PixelForge.
+            He consultat la informació dels usuaris, creat comptes i grups, modificat-ne les
+            pertinences i comprovat què passa en canviar un grup principal o esborrar un compte.</p>
+
+          <h4>1. Reconèixer els comptes i els fitxers del sistema</h4>
+          <p>Primer he consultat el meu usuari, l’UID i els grups amb què treballo, i he comprovat
+            les entrades de <code>/etc/passwd</code>, el permís de lectura de
+            <code>/etc/shadow</code>, els membres del grup <code>sudo</code> i els fitxers model
+            de <code>/etc/skel</code>. La lectura de <code>/etc/shadow</code> sense privilegis
+            és rebutjada; per consultar-hi l’entrada pròpia he fet servir <code>sudo</code>.
+            També he comprovat el shell i el GID sol·licitats al repte.</p>
+          <pre><code class="comanda-terminal">id
+grep "$USER" /etc/passwd
+tail -5 /etc/passwd
+cat /etc/shadow
+sudo grep "$USER" /etc/shadow
+getent group sudo
+ls -a /etc/skel
+grep root /etc/passwd
+getent group users</code></pre>
+          <figure>
+            <img src="img/practica4/0.png"
+              alt="Consulta de l'usuari actual, passwd, shadow i els grups del sistema">
+            <figcaption>La captura mostra la informació bàsica del compte i que
+              <code>/etc/shadow</code> requereix privilegis d’administració.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/0r.0.png"
+              alt="Línia del compte root a /etc/passwd">
+            <figcaption>Al repte he consultat el shell i la carpeta personal de
+              <code>root</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/0r.1.png"
+              alt="Membres del grup users">
+            <figcaption>La sortida de <code>getent</code> permet comprovar el GID i els membres
+              del grup <code>users</code>.</figcaption>
+          </figure>
+
+          <h4>2. Crear usuaris i comprovar-ne l’accés</h4>
+          <p>He comprovat els comptes de Núria, Pau, Marc i Laia amb
+            <code>getent passwd</code>. Per al repte he creat la Sara amb
+            <code>useradd</code>, indicant la carpeta personal, el shell Bash i el nom complet,
+            i després li he assignat una contrasenya. Les captures mostren també les comprovacions
+            de la sessió de la Núria i de la Sara: cada usuari treballa a la seva carpeta personal
+            i els fitxers nous pertanyen al seu usuari i grup principal.</p>
+          <pre><code class="comanda-terminal">getent passwd nuria pau marc laia
+sudo useradd -m -s /bin/bash -c "Sara Ruiz" sara
+sudo passwd sara
+su - nuria
+whoami
+pwd
+touch primer_dia.txt
+ls -l
+exit</code></pre>
+          <figure>
+            <img src="img/practica4/1.0.png"
+              alt="Comprovació dels comptes de Nuria, Pau, Marc i Laia">
+            <figcaption>Les entrades consultades mostren l’UID, el grup principal, la carpeta
+              personal i el shell dels quatre comptes.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/1r.0.png"
+              alt="Creació del compte de Sara amb useradd i assignació de contrasenya">
+            <figcaption>Al repte he creat <code>sara</code> amb carpeta personal, Bash i nom
+              complet.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/2.0.png"
+              alt="Sessió de Nuria i creació d'un fitxer personal">
+            <figcaption>En entrar com a <code>nuria</code>, el directori actual és
+              <code>/home/nuria</code> i el fitxer de prova queda associat al seu compte.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/2r.0.png"
+              alt="Sessió de Sara i creació del fitxer so_intro.wav">
+            <figcaption>El repte comprova que <code>so_intro.wav</code> pertany a
+              <code>sara</code> i al seu grup principal.</figcaption>
+          </figure>
+
+          <h4>3. Crear i esborrar grups</h4>
+          <p>He creat els grups dels departaments amb <code>groupadd</code> i
+            <code>addgroup</code>, i he eliminat el grup amb el nom escrit incorrectament.
+            Al repte he creat <code>musica</code> amb el GID 2000 i n’he comprovat l’entrada.
+            L’eliminació del grup mal escrit no mostra cap resultat amb
+            <code>getent</code>, senyal que ja no existeix.</p>
+          <pre><code class="comanda-terminal">sudo groupadd programadors
+sudo addgroup artistes
+sudo groupadd testers
+sudo addgroup becaris
+sudo groupadd progamadors
+tail -5 /etc/group
+sudo groupdel progamadors
+getent group progamadors
+sudo groupadd -g 2000 musica
+getent group musica</code></pre>
+          <figure>
+            <img src="img/practica4/3.0.png"
+              alt="Creació dels grups i eliminació del grup escrit incorrectament">
+            <figcaption>La comprovació final no retorna cap entrada per al grup
+              <code>progamadors</code>, que s’ha esborrat.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/3r.0.png"
+              alt="Creació del grup musica amb GID 2000">
+            <figcaption>El repte crea el grup <code>musica</code> amb el GID indicat.</figcaption>
+          </figure>
+
+          <h4>4. Afegir usuaris als grups</h4>
+          <p>He afegit Núria, Pau, Marc i Laia als grups corresponents amb diferents ordres.
+            També he provat expressament <code>usermod -G</code> sense <code>-a</code>:
+            aquesta opció substitueix els grups secundaris existents. Després he corregit la
+            pertinença de la Núria amb <code>-aG</code> i he consultat els quatre grups per
+            comprovar-ne els membres. Al repte he afegit la Sara a <code>musica</code> i
+            <code>artistes</code> amb una sola ordre.</p>
+          <pre><code class="comanda-terminal">sudo usermod -aG programadors nuria
+sudo gpasswd -a pau artistes
+sudo adduser marc testers
+sudo adduser laia becaris
+sudo gpasswd -a laia artistes
+sudo usermod -G testers nuria
+groups nuria
+sudo usermod -aG programadors nuria
+groups nuria
+sudo gpasswd -d laia artistes
+getent group programadors artistes testers becaris
+sudo usermod -aG musica,artistes sara
+id sara</code></pre>
+          <figure>
+            <img src="img/practica4/4.0.png"
+              alt="La Núria queda només al grup testers després d'usar usermod -G">
+            <figcaption>Sense <code>-a</code>, la Núria perd temporalment la pertinença a
+              <code>programadors</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/4.1.png"
+              alt="Restabliment del grup programadors amb usermod -aG">
+            <figcaption>Amb <code>-aG</code>, s’afegeix el grup sense substituir les altres
+              pertinences.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/4.2.png"
+              alt="Membres dels grups programadors, artistes, testers i becaris">
+            <figcaption>La consulta final mostra la composició dels quatre grups.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/4r.0.png"
+              alt="Afegir Sara als grups musica i artistes amb usermod">
+            <figcaption>El repte afegeix la Sara als dos grups secundaris en una sola ordre.</figcaption>
+          </figure>
+
+          <h4>5. Canviar el grup principal</h4>
+          <p>Abans del canvi, els fitxers nous d’en Pau pertanyen al seu grup personal. He canviat
+            el grup principal a <code>programadors</code> amb <code>usermod -g</code> i he
+            comparat els fitxers creats abans i després: el fitxer existent conserva el grup
+            anterior, mentre que el nou ja pertany a <code>programadors</code>. Al repte he fet
+            que el grup principal de la Sara sigui <code>musica</code> i ho he verificat amb un
+            fitxer creat des de la seva sessió.</p>
+          <pre><code class="comanda-terminal">id pau
+su - pau
+touch dibuix_abans.png
+ls -l
+exit
+sudo usermod -g programadors pau
+id pau
+su - pau
+touch codi_despres.py
+ls -l
+exit
+sudo usermod -g musica sara</code></pre>
+          <figure>
+            <img src="img/practica4/5.0.png"
+              alt="Grup principal inicial del compte Pau">
+            <figcaption>La sortida inicial d’<code>id pau</code> identifica el grup principal
+              abans del canvi.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/5.1.png"
+              alt="Fitxer de prova creat per Pau abans de canviar el grup principal">
+            <figcaption>El primer fitxer pertany al grup personal <code>pau</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/5.2.png"
+              alt="Fitxers de Pau amb grups diferents abans i després del canvi">
+            <figcaption>Després del canvi, el fitxer nou pertany a <code>programadors</code>;
+              el fitxer anterior no ha canviat de grup.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/5r.0.png"
+              alt="Canvi del grup principal de Sara a musica i fitxer de comprovació">
+            <figcaption>El repte confirma que un fitxer nou de la Sara té
+              <code>musica</code> com a grup propietari.</figcaption>
+          </figure>
+
+          <h4>6. Bloquejar i desbloquejar comptes</h4>
+          <p class="revisio"><strong>Revisa abans de lliurar:</strong> La guia proposa bloquejar temporalment el compte d’en Marc, comprovar-ne l’estat
+            <code>L</code> i després desbloquejar-lo fins que torni a mostrar <code>P</code>.
+            Les captures disponibles no mostren aquest flux per a en Marc. Sí que documenten el
+            repte equivalent amb la Sara, fet amb <code>usermod -L</code> i
+            <code>usermod -U</code>, comprovant l’estat amb <code>passwd -S</code>.</p>
+          <pre><code class="comanda-terminal">sudo usermod -L sara
+sudo passwd -S sara
+sudo usermod -U sara
+sudo passwd -S sara</code></pre>
+          <figure>
+            <img src="img/practica4/6r.0.png"
+              alt="Estat del compte Sara bloquejat i desbloquejat amb usermod">
+            <figcaption>La captura del repte mostra l’estat bloquejat <code>L</code> i,
+              després de desbloquejar el compte, l’estat <code>P</code>.</figcaption>
+          </figure>
+
+          <h4>7. Canviar el nom d’usuari, el grup i la carpeta personal</h4>
+          <p>He canviat el nom de la Núria a <code>nvidal</code>. Inicialment encara conservava
+            el nom del grup personal i la carpeta <code>/home/nuria</code>; després he canviat
+            el nom del grup i he mogut la carpeta personal a <code>/home/nvidal</code>.
+            També he comprovat que el fitxer creat anteriorment continua a la nova carpeta.
+            Al repte he actualitzat el nom complet d’en Marc i l’he verificat a
+            <code>/etc/passwd</code>.</p>
+          <pre><code class="comanda-terminal">sudo usermod -l nvidal nuria
+id nvidal
+sudo groupmod -n nvidal nuria
+sudo usermod -d /home/nvidal -m nvidal
+id nvidal
+ls -l /home/nvidal
+su - nvidal
+whoami
+exit
+sudo usermod -c "Marc Soler cap de testers" marc
+grep marc /etc/passwd</code></pre>
+          <figure>
+            <img src="img/practica4/6.0.png"
+              alt="Canvi a nvidal i consulta de la nova carpeta personal">
+            <figcaption>La comprovació mostra el grup <code>nvidal</code> i la carpeta
+              <code>/home/nvidal</code>; el fitxer de prova s’hi conserva.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica4/7r.0.png"
+              alt="Actualització del nom complet de Marc a /etc/passwd">
+            <figcaption>Al repte he actualitzat el camp descriptiu d’en Marc sense canviar-ne el
+              nom d’usuari.</figcaption>
+          </figure>
+
+          <h4>8. Esborrar un compte i un grup</h4>
+          <p>He esborrat el compte de la Laia sense l’opció <code>-r</code>; per això la seva
+            carpeta personal ha quedat al sistema amb l’UID numèric del compte eliminat. Després
+            he esborrat explícitament aquesta carpeta i el grup <code>becaris</code>, i he
+            comprovat l’estat final dels comptes i grups que es conserven per a la pràctica
+            següent.</p>
+          <pre><code class="comanda-terminal">ls -l /home
+sudo userdel laia
+ls -l /home
+sudo rm -r /home/laia
+sudo delgroup becaris
+getent group becaris
+getent passwd nvidal pau marc
+getent group programadors artistes testers</code></pre>
+          <figure>
+            <img src="img/practica4/8.0.png"
+              alt="Esborrament de Laia i becaris i comprovació dels comptes i grups finals">
+            <figcaption>La captura mostra l’eliminació de la carpeta òrfena i del grup
+              <code>becaris</code>, i la consulta final de PixelForge.</figcaption>
+          </figure>
+          <p>Al repte final, <code>groupdel musica</code> no pot esborrar el grup mentre és el
+            grup principal de la Sara. He canviat primer el seu grup principal a <code>sara</code>
+            i llavors he eliminat <code>musica</code>.</p>
+          <pre><code class="comanda-terminal">sudo groupdel musica
+sudo usermod -g sara sara
+sudo groupdel musica</code></pre>
+          <figure>
+            <img src="img/practica4/8r.0.png"
+              alt="Error en intentar eliminar el grup principal de Sara i eliminació després del canvi">
+            <figcaption>El primer intent falla perquè <code>musica</code> és el grup principal
+              de la Sara; després de canviar-lo, es pot esborrar.</figcaption>
+          </figure>
         </section>
         <section id="apartat4-2">
           <h3>4.2 Permisos</h3>
-          <p>En aquest subapartat s’explica com els permisos determinen l’accés als fitxers i directoris.</p>
+          <p>En aquesta pràctica he preparat les carpetes de PixelForge a
+            <code>/srv/pixelforge</code> i he canviat els permisos perquè cada equip pugui
+            treballar als seus fitxers. També he provat els bits SGID i sticky, les ACL i la
+            màscara <code>umask</code>.</p>
+
+          <h4>1. Preparar l’espai de treball i mirar els permisos</h4>
+          <p>He creat les carpetes <code>codi</code>, <code>art</code>, <code>proves</code> i
+            <code>compartit</code>, amb un fitxer d’exemple per als tres equips. Al principi,
+            les carpetes i els fitxers són de <code>root</code>. Després he mirat els permisos
+            amb <code>ls</code> i <code>stat</code>, i he comprovat els de <code>/etc/shadow</code>
+            i <code>/root</code>.</p>
+          <pre><code class="comanda-terminal">sudo mkdir -p /srv/pixelforge
+cd /srv/pixelforge
+sudo mkdir codi art proves compartit
+sudo touch codi/joc.py art/logo.png proves/informe.txt
+ls -l /srv/pixelforge
+ls -l /srv/pixelforge/codi/joc.py
+ls -ld /srv/pixelforge/codi
+stat /srv/pixelforge/codi/joc.py</code></pre>
+          <figure>
+            <img src="img/practica5/0.0.png"
+              alt="Carpetes de PixelForge creades sota /srv/pixelforge">
+            <figcaption>Les quatre carpetes apareixen creades i pertanyen inicialment a
+              <code>root</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/1.0.png"
+              alt="Consulta dels permisos del fitxer joc.py i de la carpeta codi">
+            <figcaption>He consultat els permisos amb <code>ls</code> i <code>stat</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/1r.0.png"
+              alt="Permisos dels fitxers /etc/shadow i /root">
+            <figcaption>La comprovació mostra els permisos restrictius d’aquests dos recursos
+              del sistema.</figcaption>
+          </figure>
+
+          <h4>2. Canviar permisos amb números</h4>
+          <p>He posat <code>750</code> a <code>codi</code> i als fitxers que hi conté,
+            <code>755</code> a <code>art</code> i <code>640</code> a
+            <code>proves/informe.txt</code>. Al repte he deixat <code>compartit</code> amb
+            <code>775</code>, perquè el propietari i el grup hi puguin escriure.</p>
+          <pre><code class="comanda-terminal">sudo chmod -R 750 /srv/pixelforge/codi
+sudo chmod 755 /srv/pixelforge/art
+sudo chmod 640 /srv/pixelforge/proves/informe.txt
+sudo chmod 775 /srv/pixelforge/compartit
+ls -ld /srv/pixelforge/compartit</code></pre>
+          <figure>
+            <img src="img/practica5/2.0.png"
+              alt="Permís 750 aplicat a la carpeta codi i al fitxer joc.py">
+            <figcaption>La carpeta <code>codi</code> i el fitxer que conté apareixen amb permís
+              <code>750</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/2.1.png"
+              alt="Permisos de logo.png a art i informe.txt a proves">
+            <figcaption>He comprovat els permisos del fitxer de <code>art</code> i del fitxer de
+              <code>proves</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/2r.0.png"
+              alt="Permís 775 aplicat a la carpeta compartit">
+            <figcaption>Al repte he aplicat el permís <code>775</code> a
+              <code>compartit</code>.</figcaption>
+          </figure>
+
+          <h4>3. Canviar permisos amb lletres</h4>
+          <p>També he modificat els permisos d’<code>art</code> amb les opcions simbòliques
+            <code>u</code>, <code>g</code> i <code>o</code>. Al repte he deixat
+            <code>informe.txt</code> amb lectura i escriptura per al propietari, només lectura
+            per al grup i cap permís per a la resta.</p>
+          <pre><code class="comanda-terminal">sudo chmod u-w /srv/pixelforge/art
+sudo chmod u+w /srv/pixelforge/art
+sudo chmod o= /srv/pixelforge/art
+sudo chmod g+rx,o-w /srv/pixelforge/art
+sudo chmod u=rw,g=r,o= /srv/pixelforge/proves/informe.txt
+ls -l /srv/pixelforge/proves/informe.txt</code></pre>
+          <figure>
+            <img src="img/practica5/3.0.png"
+              alt="Canvis simbòlics dels permisos de la carpeta art">
+            <figcaption>He tret i tornat a afegir permisos amb <code>chmod</code> simbòlic.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/3r.0.png"
+              alt="Permisos 640 d'informe.txt amb chmod simbòlic">
+            <figcaption>La sortida del repte mostra <code>rw-r-----</code>, equivalent a
+              <code>640</code>.</figcaption>
+          </figure>
+
+          <h4>4. Assignar carpetes als equips</h4>
+          <p>He canviat el propietari de <code>codi</code> a <code>pau</code> i el seu grup a
+            <code>programadors</code>. A <code>proves</code> només n’he canviat el grup a
+            <code>testers</code>. He provat que en Pau pot crear un fitxer a la carpeta de codi,
+            però no a la de proves. Al repte he afegit en Biel al grup <code>artistes</code> i li
+            he assignat la carpeta <code>art</code>.</p>
+          <pre><code class="comanda-terminal">sudo chown -R pau:programadors /srv/pixelforge/codi
+sudo chgrp -R testers /srv/pixelforge/proves
+su - pau
+cd /srv/pixelforge/codi
+touch nivell1.py
+touch /srv/pixelforge/proves/intrus.txt
+exit
+sudo usermod -aG artistes biel
+sudo chown biel:artistes /srv/pixelforge/art
+id biel
+ls -ld /srv/pixelforge/art</code></pre>
+          <figure>
+            <img src="img/practica5/4.0.png"
+              alt="Pau crea un fitxer a codi i no pot escriure a proves">
+            <figcaption>En Pau pot treballar a <code>codi</code>, però rep un error de permís en
+              intentar escriure a <code>proves</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/4.1.png"
+              alt="Propietaris i grups de les carpetes de PixelForge">
+            <figcaption>La consulta mostra les carpetes assignades als grups corresponents.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/4r.0.png"
+              alt="Biel afegit al grup artistes i assignat com a propietari de art">
+            <figcaption>Al repte, en Biel queda al grup <code>artistes</code> i com a propietari
+              de la carpeta <code>art</code>.</figcaption>
+          </figure>
+
+          <h4>5. Fer que els fitxers nous heretin el grup (SGID)</h4>
+          <p>Abans de posar SGID, un fitxer nou creat per la Núria dins de <code>codi</code>
+            pertany al seu grup personal. He donat escriptura al grup i he activat SGID a la
+            carpeta; després, el fitxer nou ja pertany a <code>programadors</code>. Al repte he
+            fet el mateix a <code>proves</code> perquè els fitxers nous siguin del grup
+            <code>testers</code>.</p>
+          <pre><code class="comanda-terminal">sudo chmod g+w /srv/pixelforge/codi
+su - nvidal
+touch /srv/pixelforge/codi/mapa.py
+exit
+sudo chmod g+s /srv/pixelforge/codi
+su - nvidal
+touch /srv/pixelforge/codi/so.py
+exit
+sudo chgrp -R testers /srv/pixelforge/proves
+sudo chmod g+w /srv/pixelforge/proves
+sudo chmod g+s /srv/pixelforge/proves
+su - marc
+touch /srv/pixelforge/proves/test_marc.txt
+ls -l /srv/pixelforge/proves
+exit</code></pre>
+          <figure>
+            <img src="img/practica5/5.0.png"
+              alt="Fitxers de codi abans d'activar SGID">
+            <figcaption>Abans d’activar SGID, <code>mapa.py</code> pertany al grup personal
+              <code>nvidal</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/5.1.png"
+              alt="Fitxers de codi després d'activar SGID">
+            <figcaption>Amb SGID activat, el fitxer nou <code>so.py</code> pertany al grup
+              <code>programadors</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/5r.0.png"
+              alt="Activació de SGID a proves i canvi del grup a testers">
+            <figcaption>Al repte he preparat la carpeta <code>proves</code> perquè hereti el grup
+              <code>testers</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/5r.1.png"
+              alt="Marc crea un fitxer nou dins de proves">
+            <figcaption>En Marc pot crear el fitxer de prova a <code>proves</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/5r.2.png"
+              alt="El fitxer nou de Marc pertany al grup testers">
+            <figcaption>El fitxer creat per en Marc apareix assignat al grup
+              <code>testers</code>.</figcaption>
+          </figure>
+
+          <h4>6. Protegir la carpeta compartida (sticky bit)</h4>
+          <p>He comprovat que, amb permisos <code>777</code>, en Marc podia esborrar un fitxer
+            creat per en Pau. Després he activat el sticky bit: tots dos poden deixar-hi fitxers,
+            però només el propietari del fitxer (o <code>root</code>) el pot esborrar. Al repte
+            he comprovat que en Marc sí que pot esborrar un fitxer seu.</p>
+          <pre><code class="comanda-terminal">sudo chmod 777 /srv/pixelforge/compartit
+su - pau
+touch /srv/pixelforge/compartit/de_pau.txt
+exit
+su - marc
+rm /srv/pixelforge/compartit/de_pau.txt
+exit
+sudo chmod +t /srv/pixelforge/compartit
+su - pau
+touch /srv/pixelforge/compartit/de_pau.txt
+exit
+su - marc
+rm /srv/pixelforge/compartit/de_pau.txt
+touch /srv/pixelforge/compartit/de_marc.txt
+rm /srv/pixelforge/compartit/de_marc.txt
+exit</code></pre>
+          <figure>
+            <img src="img/practica5/6.0.png"
+              alt="Carpeta compartit amb sticky bit activat">
+            <figcaption>La <code>t</code> al final dels permisos indica que el sticky bit és
+              activat.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/6.1.png"
+              alt="Marc no pot esborrar el fitxer de Pau després d'activar sticky bit">
+            <figcaption>Amb el sticky bit activat, en Marc no pot esborrar el fitxer d’en Pau.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/6r.0.png"
+              alt="Marc esborra el seu propi fitxer a la carpeta compartida">
+            <figcaption>Al repte, en Marc crea i esborra el seu propi fitxer.</figcaption>
+          </figure>
+
+          <h4>7. Donar accés puntual amb ACL</h4>
+          <p>En Marc no pertany a <code>programadors</code>, així que al principi no pot entrar
+            a <code>codi</code>. Li he donat permisos de lectura i execució només en aquesta
+            carpeta amb una ACL i després li he tret. Al repte he afegit una ACL per defecte a
+            <code>compartit</code> perquè els fitxers nous heretin permisos per al grup
+            <code>artistes</code>.</p>
+          <pre><code class="comanda-terminal">su - marc
+ls /srv/pixelforge/codi
+exit
+sudo setfacl -m u:marc:rx /srv/pixelforge/codi
+ls -ld /srv/pixelforge/codi
+getfacl /srv/pixelforge/codi
+su - marc
+ls /srv/pixelforge/codi
+exit
+sudo setfacl -x u:marc /srv/pixelforge/codi
+getfacl /srv/pixelforge/codi
+sudo setfacl -d -m g:artistes:rwx /srv/pixelforge/compartit
+getfacl /srv/pixelforge/compartit</code></pre>
+          <figure>
+            <img src="img/practica5/7.0.png"
+              alt="ACL que dona lectura i execució a Marc a la carpeta codi">
+            <figcaption><code>getfacl</code> mostra l’entrada ACL d’en Marc a
+              <code>codi</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/7.1.png"
+              alt="Eliminació de l'ACL de Marc a codi">
+            <figcaption>He tret l’ACL d’en Marc i comprovat que ja no apareix a la llista.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/7r.0.png"
+              alt="ACL per defecte del grup artistes a compartit">
+            <figcaption>L’ACL per defecte de <code>compartit</code> inclou el grup
+              <code>artistes</code>.</figcaption>
+          </figure>
+
+          <h4>8. Comprovar umask i el bit SUID</h4>
+          <p>He provat la màscara <code>umask 027</code>: els fitxers nous queden amb permisos
+            <code>640</code> i les carpetes amb <code>750</code>. També he consultat el bit SUID
+            de <code>/usr/bin/passwd</code> i he llistat els programes SUID de
+            <code>/usr/bin</code>. Al repte he provat la màscara <code>137</code>; en aquest
+            cas, la carpeta queda sense permís d’entrada (<code>x</code>), per això no s’hi pot
+            accedir amb <code>cd</code>.</p>
+          <pre><code class="comanda-terminal">umask 027
+touch prova2.txt
+mkdir prova2_dir
+ls -ld prova2.txt prova2_dir
+ls -l /usr/bin/passwd
+find /usr/bin -perm -4000 2&gt;/dev/null
+umask 137
+touch fitxer_test.txt
+mkdir carpeta_test
+ls -ld fitxer_test.txt carpeta_test
+cd carpeta_test</code></pre>
+          <figure>
+            <img src="img/practica5/8.0.png"
+              alt="Permisos de fitxer i carpeta creats amb umask 027">
+            <figcaption>La màscara <code>027</code> produeix un fitxer de permís
+              <code>640</code> i una carpeta de permís <code>750</code>.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/8.1.png"
+              alt="Bit SUID de passwd i llista d'executables SUID">
+            <figcaption><code>/usr/bin/passwd</code> té el bit SUID i la cerca mostra altres
+              executables amb aquest bit.</figcaption>
+          </figure>
+          <figure>
+            <img src="img/practica5/8r.0.png"
+              alt="Permisos obtinguts amb umask 137">
+            <figcaption>Amb <code>umask 137</code>, la carpeta de prova queda sense permís
+              d’execució, necessari per poder-hi entrar.</figcaption>
+          </figure>
         </section>
+        <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
+      </article>
+      <article class="apartat" id="apartat5">
+        <h2>5. Quotes de disc</h2>
+        <p class="revisio"><strong>Revisa abans de lliurar:</strong> aquest apartat encara no està documentat.</p>
         <p class="tornar-index"><a href="#index-apartats">↑ Tornar a l'índex</a></p>
       </article>
     </section>
