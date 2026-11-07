@@ -348,3 +348,29 @@ footer.peu .autoria strong { color: var(--tinta); }
 .bloc-llicencia h3 { margin: 0 0 8px; font-size: 1rem; color: var(--mari); }
 .bloc-llicencia p { margin: 6px 0; font-size: 0.92rem; }
 .bloc-llicencia .badge-cc { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+
+/* ---------- Indicador discret del progrés de lectura ---------- */
+.progres-pagina {
+  position: fixed;
+  z-index: 1000;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(18, 37, 66, 0.12);
+  pointer-events: none;
+}
+.progres-pagina-indicador {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--ambre));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 120ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progres-pagina-indicador {
+    transition: none;
+  }
+}

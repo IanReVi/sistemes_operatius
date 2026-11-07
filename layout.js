@@ -5,6 +5,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const pageTitle = document.title.split(" - ")[0];
   const headerElem = document.getElementById("header-container");
   const footerElem = document.getElementById("footer-container");
+  const progressBar = document.createElement("div");
+  const progressIndicator = document.createElement("div");
+  progressBar.className = "progres-pagina";
+  progressBar.setAttribute("role", "progressbar");
+  progressBar.setAttribute("aria-label", "Progrés de lectura de la pàgina");
+  progressBar.setAttribute("aria-valuemin", "0");
+  progressBar.setAttribute("aria-valuemax", "100");
+  progressBar.setAttribute("aria-valuenow", "0");
+  progressIndicator.className = "progres-pagina-indicador";
+  progressBar.append(progressIndicator);
+  document.body.append(progressBar);
+
+  let progressFrame = null;
+  const updateProgress = () => {
+    if (progressFrame !== null) return;
+    progressFrame = window.requestAnimationFrame(() => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0
+        ? Math.min(100, Math.max(0, (window.scrollY / scrollableHeight) * 100))
+        : 100;
+      progressIndicator.style.transform = `scaleX(${progress / 100})`;
+      progressBar.setAttribute("aria-valuenow", String(Math.round(progress)));
+      progressFrame = null;
+    });
+  };
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  window.addEventListener("resize", updateProgress);
+  updateProgress();
+
   const headerData = headerElem ? headerElem.dataset : {};
   const sprintMatch = currentPath.match(/sprint([1-5])([uw])\//i);
   const section = sprintMatch ? sprintMatch[2].toLowerCase() : currentPath.match(/sprint([uw])\.html/i)?.[1]?.toLowerCase();
